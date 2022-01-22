@@ -4,7 +4,7 @@ const path = require("path");
 
 module.exports = {
   //* "BABEL-POLUFILL TO HANDLE ASYNC/AWAIT IN BROWSER"
-  entry: ["@babel/polyfill", "./src/index.js"],
+  entry: ["@babel/polyfill", "./client/index.js"],
   output: {
     path: path.resolve(__dirname, "public"),
     publicPath: "/public/",
