@@ -57,9 +57,11 @@ const DropZone = (props) => {
         </div>
       </div>
       {cid.length ? (
-        <div className="container">
-          <h1>You now able to view your folder here:</h1>
-          <a>{`https://ipfs.io/${cid}`}</a>
+        <div className="container_new">
+          <h3>You now able to view your folder here:</h3>
+          <h3>
+            <a href={`https://ipfs.io/ipfs/${cid}`}>{`https://ipfs.io/ipfs/${cid}`}</a>
+          </h3>
         </div>
       ) : (
         <div className="container">No CID yet</div>
