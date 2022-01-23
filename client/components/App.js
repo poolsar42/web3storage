@@ -7,9 +7,6 @@ const App = (props) => {
     <div>
       <p className="title">React Drag and Drop Image Upload</p>
       <DropZone />
-      <form className="btn">
-        <button>Upload to IPFS</button>
-      </form>
     </div>
   );
 };
