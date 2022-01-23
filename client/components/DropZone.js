@@ -25,13 +25,10 @@ const makeFileObject = (file) => {
 
 const DropZone = (props) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
-  const [_files, setFiles] = useState([]);
   const [cid, setCid] = useState("");
   const [wait, setWait] = useState("");
 
-  const files = acceptedFiles.map((file) => (
-    <li key={file.path}>{file.path}</li>
-  ));
+  let files = acceptedFiles.map((file) => <li key={file.path}>{file.path}</li>);
 
   const storeFiles = async (event) => {
     event.preventDefault();
@@ -60,8 +57,12 @@ const DropZone = (props) => {
         <div className="container_new">
           <h3>You now able to view your folder here:</h3>
           <h3>
-            <a href={`https://ipfs.io/ipfs/${cid}`}>{`https://ipfs.io/ipfs/${cid}`}</a>
+            <a
+              href={`https://ipfs.io/ipfs/${cid}`}
+            >{`https://ipfs.io/ipfs/${cid}`}</a>
           </h3>
+          <h3>Your CID:</h3>
+          <h3>{cid}</h3>
         </div>
       ) : (
         <div className="container">No CID yet</div>
