@@ -38,7 +38,7 @@ const DropZone = (props) => {
     if (acceptedFiles.length) {
       const modFiles = acceptedFiles.map((file) => makeFileObject(file));
       try {
-        setWait("Hangs tight");
+        setWait("Hang Tight");
         const CID = await client.put(modFiles);
         setCid(CID);
         setWait("");
