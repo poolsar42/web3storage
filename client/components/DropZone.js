@@ -27,17 +27,36 @@ const DropZone = (props) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
   const [cid, setCid] = useState("");
   const [wait, setWait] = useState("");
-
   let files = acceptedFiles.map((file) => <li key={file.path}>{file.path}</li>);
+
+  let uploaded = 0;
 
   const storeFiles = async (event) => {
     event.preventDefault();
     if (acceptedFiles.length) {
+      const totalSize = acceptedFiles
+        .map((f) => f.size)
+        .reduce((a, b) => a + b, 0);
       const modFiles = acceptedFiles.map((file) => makeFileObject(file));
       try {
+        const onStoredChunk = (size) => {
+          console.log(size, uploaded, totalSize);
+          uploaded += size;
+          const pct = uploaded / totalSize;
+          console.log(`Uploading... ${pct.toFixed(2)}% complete`);
+        };
+
+        const onRootCidReady = (cid) => {
+          console.log("uploading files with cid:", cid);
+          setCid(cid);
+        };
+
         setWait("Hang Tight");
-        const CID = await client.put(modFiles);
-        setCid(CID);
+        const CID = await client.put(modFiles, {
+          onRootCidReady,
+          onStoredChunk,
+          maxRetries: 3,
+        });
         setWait("");
       } catch (error) {
         console.error(error);
