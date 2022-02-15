@@ -45,7 +45,7 @@ const DropZone = (props) => {
         const onStoredChunk = (size) => {
           console.log(size, uploaded, totalSize);
           uploaded += size;
-          const pct = uploaded / totalSize;
+          const pct = (uploaded / totalSize) * 100;
           console.log(`Uploading... ${pct.toFixed(2)}% complete`);
         };
 
