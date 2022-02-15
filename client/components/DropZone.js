@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./DropZone.css";
 import { Web3Storage } from "web3.storage";
 import { useDropzone } from "react-dropzone";
+import { NFTStorage } from "nft.storage";
 
 //* DON'T DO LIKE THAT IN PRODUCTION
 const API_TOKEN =
@@ -38,6 +39,8 @@ const DropZone = (props) => {
         .map((f) => f.size)
         .reduce((a, b) => a + b, 0);
       const modFiles = acceptedFiles.map((file) => makeFileObject(file));
+      const { cid, car } = await NFTStorage.encodeDirectory(modFiles);
+      console.log("Your CID:", cid.toString());
       try {
         const onStoredChunk = (size) => {
           console.log(size, uploaded, totalSize);
@@ -46,18 +49,13 @@ const DropZone = (props) => {
           console.log(`Uploading... ${pct.toFixed(2)}% complete`);
         };
 
-        const onRootCidReady = (cid) => {
-          console.log("uploading files with cid:", cid);
-          setCid(cid);
-        };
-
         setWait("Hang Tight");
-        const CID = await client.put(modFiles, {
-          onRootCidReady,
+        const CID = await client.putCar(car, {
           onStoredChunk,
           maxRetries: 3,
         });
         setWait("");
+        setCid(CID);
       } catch (error) {
         console.error(error);
       }
@@ -89,7 +87,7 @@ const DropZone = (props) => {
       {wait.length ? <h1 className="container">{wait}</h1> : <></>}
 
       <aside className="container">
-        <ol>{files}</ol>
+        <ol>Quantity: {files.length}</ol>
       </aside>
       <form className="btn" onSubmit={storeFiles}>
         <button>Upload to IPFS</button>
